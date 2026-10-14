@@ -12,5 +12,5 @@ runs:
       env:
         STATUS_TOKEN: ${{ inputs.token }}
         STATUS_OWNER: ${{ github.repository_owner }}
-        STATUS_TARGET_REPO: kapetim/kapetim
+        STATUS_TARGET_REPO: kapetao/kapetao
       run: bash "${{ github.action_path }}/../../scripts/profile/refresh.sh"
