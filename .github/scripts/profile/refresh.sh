@@ -3,15 +3,15 @@
 # Never pushes to the profile's main — the change always lands as a PR.
 #
 # The order is explicit (scripts/profile/repos.txt), not discovered, so slots stay
-# stable and empty slots (0-9) render as `—`. More than 10 repos is an error:
-# append to an existing repo instead of adding an 11th.
+# stable. Public slots render at +1..+9, 0 is the hub, and -1.. are the private
+# repos — the block reads like a building, highest floor first.
 #
-# usage: [STATUS_OWNER=kapetim] [STATUS_TARGET_REPO=kapetim/kapetim] \
+# usage: [STATUS_OWNER=kapetao] [STATUS_TARGET_REPO=kapetao/kapetao] \
 #          [STATUS_TOKEN=...] bash scripts/profile/refresh.sh
 set -euo pipefail
 
-OWNER="${STATUS_OWNER:-kapetim}"
-TARGET_REPO="${STATUS_TARGET_REPO:-${OWNER}/kapetim}"
+OWNER="${STATUS_OWNER:-kapetao}"
+TARGET_REPO="${STATUS_TARGET_REPO:-${OWNER}/${OWNER}}"
 TOKEN="${STATUS_TOKEN:-${GH_TOKEN:-}}"
 PR_BRANCH="${STATUS_PR_BRANCH:-chore/repo-status}"
 PR_TITLE="${STATUS_PR_TITLE:-chore: refresh repo status}"
@@ -38,8 +38,8 @@ while IFS='|' read -r idx repo label; do
   count=$((count + 1))
 done <"$REPOS_FILE"
 
-if (( count > 11 )); then
-  echo "::error::repo cap exceeded: ${count} repos (max 11 — the -1 vault plus slots 0-9). Append to an existing repo instead of adding a new one." >&2
+if (( count > 13 )); then
+  echo "::error::repo cap exceeded: ${count} repos (max 13 — slots 1-9 public, 0 hub, -1..-3 private). Append to an existing repo instead of adding a new one." >&2
   exit 1
 fi
 
@@ -84,20 +84,75 @@ repo_size() {
   fi
 }
 
+floor_label() {
+  local i="$1"
+  if (( i > 0 )); then printf '+%d' "$i"
+  elif (( i == 0 )); then printf '0'
+  else printf '%d' "$i"
+  fi
+}
+
+floor_marker() {
+  local i="$1"
+  if (( i > 0 )); then printf '☀️ %s' "$(floor_label "$i")"
+  elif (( i == 0 )); then printf '🏢 0'
+  else printf '🌑 %s' "$(floor_label "$i")"
+  fi
+}
+
+slot_id() {
+  local i="$1"
+  if (( i > 0 )); then printf 'f%d' "$i"
+  elif (( i == 0 )); then printf 'f0'
+  else printf 'b%d' "$(( -i ))"
+  fi
+}
+
+# emit_mermaid — the building schematic: floors stacked, public above, the hub on
+# the ground floor, the private repos underground.
+emit_mermaid() {
+  echo '```mermaid'
+  echo 'flowchart TB'
+  local i repo label cls
+  for i in 9 8 7 6 5 4 3 2 1 0 -1 -2 -3; do
+    [[ -z "${SLOTS[$i]:-}" ]] && continue
+    IFS='|' read -r repo label <<<"${SLOTS[$i]}"
+    if (( i > 0 )); then cls=pub; elif (( i == 0 )); then cls=ground; else cls=priv; fi
+    printf '  %s["%s · %s"]:::%s\n' "$(slot_id "$i")" "$(floor_label "$i")" "$label" "$cls"
+  done
+  local chain="" prev="" id
+  for i in 9 8 7 6 5 4 3 2 1 0 -1 -2 -3; do
+    [[ -z "${SLOTS[$i]:-}" ]] && continue
+    id="$(slot_id "$i")"
+    if [[ -n "$prev" ]]; then chain+="  ${prev} --- ${id}"$'\n'; fi
+    prev="$id"
+  done
+  printf '%s' "$chain"
+  echo '  classDef pub fill:#dafbe1,stroke:#1a7f37,color:#0a3622;'
+  echo '  classDef ground fill:#ddf4ff,stroke:#0969da,color:#0a3069;'
+  echo '  classDef priv fill:#ffeff7,stroke:#bf3989,color:#4c0a2f;'
+  echo '```'
+}
+
 build_table() {
-  echo "| # | Repo | Tag | Size | CI |"
-  echo "|---|---|---|---|---|"
+  emit_mermaid
+  echo
+  echo "| Floor | Repo | Tag | Size | CI |"
+  echo "|------:|------|-----|------|----|"
   local i repo label ci tag size
-  for i in -1 0 1 2 3 4 5 6 7 8 9; do
+  for i in 9 8 7 6 5 4 3 2 1 0 -1 -2 -3; do
+    if [[ "${STATUS_SKIP_PRIVATE:-0}" == "1" && "$i" == -* ]]; then
+      continue
+    fi
     if [[ -z "${SLOTS[$i]:-}" ]]; then
-      echo "| ${i} | — | — | — | — |"
+      echo "| $(floor_marker "$i") | — | — | — | — |"
       continue
     fi
     IFS='|' read -r repo label <<<"${SLOTS[$i]}"
     tag="$(repo_tag "$repo")"
     size="$(repo_size "$repo")"
     ci="$(repo_ci "$repo")"
-    echo "| ${i} | [${label}](https://github.com/${OWNER}/${repo}) | ${tag} | ${size} | ${ci} |"
+    echo "| $(floor_marker "$i") | [${label}](https://github.com/${OWNER}/${repo}) | ${tag} | ${size} | ${ci} |"
   done
 }
 
