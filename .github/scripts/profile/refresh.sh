@@ -38,8 +38,8 @@ while IFS='|' read -r idx repo label; do
   count=$((count + 1))
 done <"$REPOS_FILE"
 
-if (( count > 11 )); then
-  echo "::error::repo cap exceeded: ${count} repos (max 11 — the -1 vault plus slots 0-9). Append to an existing repo instead of adding a new one." >&2
+if (( count > 13 )); then
+  echo "::error::repo cap exceeded: ${count} repos (max 13 — slots 1-9 public, 0 hub, -1..-3 private). Append to an existing repo instead of adding a new one." >&2
   exit 1
 fi
 
@@ -88,7 +88,10 @@ build_table() {
   echo "| # | Repo | Tag | Size | CI |"
   echo "|---|---|---|---|---|"
   local i repo label ci tag size
-  for i in -1 0 1 2 3 4 5 6 7 8 9; do
+  for i in 9 8 7 6 5 4 3 2 1 0 -1 -2 -3; do
+    if [[ "${STATUS_SKIP_PRIVATE:-0}" == "1" && "$i" == -* ]]; then
+      continue
+    fi
     if [[ -z "${SLOTS[$i]:-}" ]]; then
       echo "| ${i} | — | — | — | — |"
       continue

@@ -1,15 +1,28 @@
+# kapetao
+
+**Main account — holds the code, reviews the pull requests.**
+
+`kapetao` owns the canonical public repositories and approves every change. Its paired
+**machine account** [`kapetim`](https://github.com/kapetim) forks each public repo and opens pull
+requests; every repo requires a PR with **1 approving review**, with admins enforced — so nothing
+reaches `main` without review here.
+
+## Repositories
+
 <!-- BEGIN status-table -->
 | # | Repo | Tag | Size | CI |
 |---|---|---|---|---|
-| -1 | [private](https://github.com/kapetim/private) | 2026-10-09T04-16-02Z | 43.7 MB | — |
-| 0 | [profile](https://github.com/kapetim/kapetim) | 2026-10-09T04-16-05Z | 12 KB | — |
-| 1 | [cli](https://github.com/kapetim/cli) | v0.3.2 | 57 KB | — |
-| 2 | [interviewing](https://github.com/kapetim/interviewing) | 2026-10-09T04-10-05Z | 531 KB | — |
-| 3 | [browser-extensions](https://github.com/kapetim/browser-extensions) | 2026-10-09T04-10-04Z | 119 KB | — |
-| 4 | [ai-training](https://github.com/kapetim/ai-training) | 2026-10-09T04-16-11Z | 5 KB | — |
-| 5 | [browser-games](https://github.com/kapetim/browser-games) | 2026-10-09T04-16-08Z | 62 KB | — |
-| 6 | [wiki](https://github.com/kapetim/wiki) | 2026-10-09T04-15-58Z | 561 KB | — |
-| 7 | [data-science](https://github.com/kapetim/data-science) | 2026-10-09T04-09-51Z | 112 KB | — |
-| 8 | [pkg-manager](https://github.com/kapetim/pkg-manager) | — | — | — |
-| 9 | [ui-assets](https://github.com/kapetim/ui-assets) | 2026-09-28 | 3 KB | — |
+| 9 | [ui-assets](https://github.com/kapetao/ui-assets) | — | — | — |
+| 8 | [pkg-manager](https://github.com/kapetao/pkg-manager) | — | — | — |
+| 7 | [radar](https://github.com/kapetao/radar) | — | — | — |
+| 6 | [journal](https://github.com/kapetao/journal) | — | — | — |
+| 5 | [browser-games](https://github.com/kapetao/browser-games) | — | — | — |
+| 4 | [ai-training](https://github.com/kapetao/ai-training) | — | — | — |
+| 3 | [browser-extensions](https://github.com/kapetao/browser-extensions) | — | — | — |
+| 2 | [interviewing](https://github.com/kapetao/interviewing) | — | — | — |
+| 1 | [cli](https://github.com/kapetao/cli) | — | — | — |
+| 0 | [kapetao](https://github.com/kapetao/kapetao) | — | — | — |
+| -1 | [private-journal](https://github.com/kapetim/private-journal) | — | — | — |
+| -2 | [private-events-log](https://github.com/kapetim/private-events-log) | — | — | — |
+| -3 | [private-database](https://github.com/kapetim/private-database) | — | — | — |
 <!-- END status-table -->
