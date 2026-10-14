@@ -12,7 +12,7 @@
 3|browser-extensions
 2|interviewing
 1|cli
-0|kapetao|kapetao
+0|kapetao|profile
 -1|private-wiki|private-wiki
 -2|private-events-log|private-events-log
 -3|private-database|private-database

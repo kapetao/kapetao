@@ -4,7 +4,7 @@
 #
 # The order is explicit (scripts/profile/repos.txt), not discovered, so slots stay
 # stable. Public slots render at +1..+9, 0 is the hub, and -1.. are the private
-# repos — the block reads like a building, highest floor first.
+# repos — the table reads like a building, highest floor first.
 #
 # usage: [STATUS_OWNER=kapetao] [STATUS_TARGET_REPO=kapetao/kapetao] \
 #          [STATUS_TOKEN=...] bash scripts/profile/refresh.sh
@@ -100,43 +100,7 @@ floor_marker() {
   fi
 }
 
-slot_id() {
-  local i="$1"
-  if (( i > 0 )); then printf 'f%d' "$i"
-  elif (( i == 0 )); then printf 'f0'
-  else printf 'b%d' "$(( -i ))"
-  fi
-}
-
-# emit_mermaid — the building schematic: floors stacked, public above, the hub on
-# the ground floor, the private repos underground.
-emit_mermaid() {
-  echo '```mermaid'
-  echo 'flowchart TB'
-  local i repo label cls
-  for i in 9 8 7 6 5 4 3 2 1 0 -1 -2 -3; do
-    [[ -z "${SLOTS[$i]:-}" ]] && continue
-    IFS='|' read -r repo label <<<"${SLOTS[$i]}"
-    if (( i > 0 )); then cls=pub; elif (( i == 0 )); then cls=ground; else cls=priv; fi
-    printf '  %s["%s · %s"]:::%s\n' "$(slot_id "$i")" "$(floor_label "$i")" "$label" "$cls"
-  done
-  local chain="" prev="" id
-  for i in 9 8 7 6 5 4 3 2 1 0 -1 -2 -3; do
-    [[ -z "${SLOTS[$i]:-}" ]] && continue
-    id="$(slot_id "$i")"
-    if [[ -n "$prev" ]]; then chain+="  ${prev} --- ${id}"$'\n'; fi
-    prev="$id"
-  done
-  printf '%s' "$chain"
-  echo '  classDef pub fill:#dafbe1,stroke:#1a7f37,color:#0a3622;'
-  echo '  classDef ground fill:#ddf4ff,stroke:#0969da,color:#0a3069;'
-  echo '  classDef priv fill:#ffeff7,stroke:#bf3989,color:#4c0a2f;'
-  echo '```'
-}
-
 build_table() {
-  emit_mermaid
-  echo
   echo "| Floor | Repo | Tag | Size | CI |"
   echo "|------:|------|-----|------|----|"
   local i repo label ci tag size
