@@ -58,10 +58,11 @@ workflows take a target `repo` input and run that repo's script image.
 
 ## Repo numbering
 
-The account keeps **one source per domain**: slots `0–9` plus the `-1` vault. The
-order lives in [`repos.txt`](../.github/scripts/profile/repos.txt).
+The account keeps **one source per domain**: slots `0–8` above ground plus the
+private underground. The order lives in
+[`repos.txt`](../.github/scripts/profile/repos.txt).
 
-- `-1` private (vault)
 - `0` profile (this repo)
 - `1` cli · `2` interviewing · `3` browser-extensions · `4` ai-training
-- `5` browser-games · `6` wiki · `7` data-science · `8` pkg-manager · `9` ui-assets
+- `5` browser-games · `6` journal · `7` radar · `8` database
+- `-1` private-wiki · `-2` private-events-log · `-3` private-database

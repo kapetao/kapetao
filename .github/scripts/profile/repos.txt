@@ -1,10 +1,9 @@
 # Repo order map — one source per domain.
-# Slots 1-9 are the public repos, 0 is the hub, and -1.. are the private repos.
-# The block renders highest slot first, lowest last (a building: public above,
+# Slots 1-8 are the public repos, 0 is the hub, and -1.. are the private repos.
+# The table renders highest slot first, lowest last (a building: public above,
 # hub on the ground floor, private underground).
 # Format: index|repo|label   (label optional; empty repo = reserved slot)
-9|ui-assets
-8|pkg-manager
+8|database|database
 7|radar|radar
 6|journal|journal
 5|browser-games
