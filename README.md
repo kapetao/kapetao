@@ -1,50 +1,27 @@
-# kapetao
+# Main account
 
-**Main account — holds the code, reviews the pull requests.**
+**Reviewer — no clones; reviews and merges.**
 
-`kapetao` owns the canonical public repositories and approves every change. Its paired
-**machine account** [`kapetim`](https://github.com/kapetim) forks each public repo and opens pull
-requests; every repo requires a PR with **1 approving review**, with admins enforced — so nothing
-reaches `main` without review here.
+This is the **main account**: the personal, canonical account. It is never used to clone
+anything — it is opened only in a **browser or the GitHub app**, to review open pull requests,
+comment, **approve** (one review), and merge. Changes arrive as pull requests from the paired
+**machine account** (a *contributor* that forks each repo and opens PRs); every repo requires a PR
+with **1 approving review**, admins enforced — so nothing reaches `main` without review.
+
+Private repositories are managed through **GitHub Codespaces** (no forks, no local clones).
+
+Rules of the road:
+
+- Open this account only when you have the patience to review a **git diff** carefully.
+- Review only PRs that **close a linked issue** and have **passing status checks**.
+- Approve and merge; never push to a protected branch.
 
 ## Repositories
 
-The block below is the whole building: public floors above ground, the hub (`kapetao`) on the
-ground floor, and the private repositories underground — titles only; their contents stay private.
+The table is the whole building: public floors above ground, this profile on the ground floor, and
+the private repositories underground — titles only; their contents stay private.
 
 <!-- BEGIN status-table -->
-```mermaid
-flowchart TB
-  f9["+9 · ui-assets"]:::pub
-  f8["+8 · pkg-manager"]:::pub
-  f7["+7 · radar"]:::pub
-  f6["+6 · journal"]:::pub
-  f5["+5 · browser-games"]:::pub
-  f4["+4 · ai-training"]:::pub
-  f3["+3 · browser-extensions"]:::pub
-  f2["+2 · interviewing"]:::pub
-  f1["+1 · cli"]:::pub
-  f0["0 · kapetao"]:::ground
-  b1["-1 · private-wiki"]:::priv
-  b2["-2 · private-events-log"]:::priv
-  b3["-3 · private-database"]:::priv
-  f9 --- f8
-  f8 --- f7
-  f7 --- f6
-  f6 --- f5
-  f5 --- f4
-  f4 --- f3
-  f3 --- f2
-  f2 --- f1
-  f1 --- f0
-  f0 --- b1
-  b1 --- b2
-  b2 --- b3
-  classDef pub fill:#dafbe1,stroke:#1a7f37,color:#0a3622;
-  classDef ground fill:#ddf4ff,stroke:#0969da,color:#0a3069;
-  classDef priv fill:#ffeff7,stroke:#bf3989,color:#4c0a2f;
-```
-
 | Floor | Repo | Tag | Size | CI |
 |------:|------|-----|------|----|
 | ☀️ +9 | [ui-assets](https://github.com/kapetao/ui-assets) | — | — | — |
@@ -56,7 +33,7 @@ flowchart TB
 | ☀️ +3 | [browser-extensions](https://github.com/kapetao/browser-extensions) | — | — | — |
 | ☀️ +2 | [interviewing](https://github.com/kapetao/interviewing) | — | — | — |
 | ☀️ +1 | [cli](https://github.com/kapetao/cli) | — | — | — |
-| 🏢 0 | [kapetao](https://github.com/kapetao/kapetao) | — | — | — |
+| 🏢 0 | [profile](https://github.com/kapetao/kapetao) | — | — | — |
 | 🌑 -1 | [private-wiki](https://github.com/kapetao/private-wiki) | — | — | — |
 | 🌑 -2 | [private-events-log](https://github.com/kapetao/private-events-log) | — | — | — |
 | 🌑 -3 | [private-database](https://github.com/kapetao/private-database) | — | — | — |
