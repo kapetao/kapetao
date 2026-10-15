@@ -3,7 +3,7 @@
 # Never pushes to the profile's main — the change always lands as a PR.
 #
 # The order is explicit (scripts/profile/repos.txt), not discovered, so slots stay
-# stable. Public slots render at +1..+9, 0 is the hub, and -1.. are the private
+# stable. Public slots render at +1..+8, 0 is the hub, and -1.. are the private
 # repos — the table reads like a building, highest floor first.
 #
 # usage: [STATUS_OWNER=kapetao] [STATUS_TARGET_REPO=kapetao/kapetao] \
@@ -38,8 +38,8 @@ while IFS='|' read -r idx repo label; do
   count=$((count + 1))
 done <"$REPOS_FILE"
 
-if (( count > 13 )); then
-  echo "::error::repo cap exceeded: ${count} repos (max 13 — slots 1-9 public, 0 hub, -1..-3 private). Append to an existing repo instead of adding a new one." >&2
+if (( count > 12 )); then
+  echo "::error::repo cap exceeded: ${count} repos (max 12 — slots 1-8 public, 0 hub, -1..-3 private). Append to an existing repo instead of adding a new one." >&2
   exit 1
 fi
 
@@ -104,7 +104,7 @@ build_table() {
   echo "| Floor | Repo | Tag | Size | CI |"
   echo "|------:|------|-----|------|----|"
   local i repo label ci tag size
-  for i in 9 8 7 6 5 4 3 2 1 0 -1 -2 -3; do
+  for i in 8 7 6 5 4 3 2 1 0 -1 -2 -3; do
     if [[ "${STATUS_SKIP_PRIVATE:-0}" == "1" && "$i" == -* ]]; then
       continue
     fi
